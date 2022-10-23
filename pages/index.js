@@ -74,13 +74,24 @@ export default function Home() {
                 </button>
             </div>
         )}
-        <Listings connected={connected} publicKey={publicKey} showReservedListing={showReservedListing} listings={displayListings} toggleEditListingModal={toggleEditListingModal} toggleReserveListingModal={toggleReserveListingModal} 
-        removeListing={removeProperty} setCurrentEditListingID={setCurrentEditListingID}/>
-        <AddListingModal addProperty={addProperty} addListingModalOpen={addListingModalOpen} setAddListingModalOpen={setAddListingModalOpen} />
-        <EditListingModal updateProperty={updateProperty} currentEditListing={currentEditListing} currentEditListingID={currentEditListingID} editListingModalOpen={editListingModalOpen} setEditListingModalOpen={setEditListingModalOpen} />
-        <ReserveListingModal currentEditListing={currentEditListing} reserveListingModalOpen={reserveListingModalOpen} setReserveListingModalOpen={setReserveListingModalOpen} 
-          reserveListing={bookProperty} 
-        />
+        {connected && 
+        <>
+          <Listings connected={connected} publicKey={publicKey} showReservedListing={showReservedListing} listings={displayListings} toggleEditListingModal={toggleEditListingModal} toggleReserveListingModal={toggleReserveListingModal} 
+          removeListing={removeProperty} setCurrentEditListingID={setCurrentEditListingID}/>
+          <AddListingModal addProperty={addProperty} addListingModalOpen={addListingModalOpen} setAddListingModalOpen={setAddListingModalOpen} />
+          <EditListingModal updateProperty={updateProperty} currentEditListing={currentEditListing} currentEditListingID={currentEditListingID} editListingModalOpen={editListingModalOpen} setEditListingModalOpen={setEditListingModalOpen} />
+          <ReserveListingModal currentEditListing={currentEditListing} reserveListingModalOpen={reserveListingModalOpen} setReserveListingModalOpen={setReserveListingModalOpen} 
+            reserveListing={bookProperty} 
+          />
+        </>
+        }
+        {!connected &&
+          <div>
+            <h1 className='p-4 font-medium'>Please Connect To Polygon Testnet</h1>
+          </div>
+
+        }
+        
         <Toaster
           position="top-center"
           reverseOrder={false}

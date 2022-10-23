@@ -27,29 +27,45 @@ export function useRental() {
                     const web3ModalLocal = new Web3Modal();
                     web3ModalLocal.clearCachedProvider();
                     let connection = await web3ModalLocal.connect();
-                    const provider = new ethers.providers.Web3Provider(connection);
-                    let signer = provider.getSigner();
-                    let pbKey = await signer.getAddress();
-                    let contract = new ethers.Contract(process.env.NEXT_PUBLIC_MARKETADDRESS, Market.abi, signer);
-                    let allProperties = await contract.fetchPropertiesOnMarket();
-                    console.log(allProperties);
-                    setProperties(allProperties);
-                    setUser(pbKey);
-                    setPublicKey(pbKey);
-                    setWeb3Modal(web3ModalLocal);
-                    setInitialized(true)
-                    setConnected(true);
+                    let isCorrectNetwork = isPolygonTestnet();
+                    if (isCorrectNetwork){
+                        const provider = new ethers.providers.Web3Provider(connection);
+                        let signer = provider.getSigner();
+                        let pbKey = await signer.getAddress();
+                        let contract = new ethers.Contract(process.env.NEXT_PUBLIC_MARKETADDRESS, Market.abi, signer);
+                        let allProperties = await contract.fetchPropertiesOnMarket();
+                        console.log(allProperties);
+                        setProperties(allProperties);
+                        setUser(pbKey);
+                        setPublicKey(pbKey);
+                        setWeb3Modal(web3ModalLocal);
+                        setInitialized(true);
+                        setConnected(true);
+                    }else{
+                        setInitialized(false);
+                        setLoading(false);
+                    }
                 } catch (error) {
-                    console.log(error)
-                    setInitialized(false)
+                    console.log(error);
+                    setInitialized(false);
                 } finally {
-                    setLoading(false)
+                    setLoading(false);
                 }
             }
         }
         start()
 
     },[initialized])
+
+    const isPolygonTestnet = async () => {
+        const chainId = 80001 // Polygon Testnet
+
+        if (window.ethereum.networkVersion !== chainId) {
+            return false;
+        }
+
+        return true;
+    }
 
     const addProperty = async ({name, location, country, price, imageURL}) => {
         if (web3Modal){
