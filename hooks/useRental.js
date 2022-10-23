@@ -8,6 +8,7 @@ export function useRental() {
     const [connection, setConnection] = useState("")
     const [publicKey, setPublicKey] = useState("")
     const [connected, setConnected] = useState(false)
+    const [isCorrectNetworkFlag, setIsCorrectNetwork] = useState(false)
     const [initialized, setInitialized] = useState(false)
     const [user,setUser] = useState({})
     const [properties, setProperties] = useState([])
@@ -28,6 +29,7 @@ export function useRental() {
                     web3ModalLocal.clearCachedProvider();
                     let connection = await web3ModalLocal.connect();
                     let isCorrectNetwork = isPolygonTestnet();
+                    setIsCorrectNetwork(isCorrectNetwork);
                     if (isCorrectNetwork){
                         const provider = new ethers.providers.Web3Provider(connection);
                         let signer = provider.getSigner();
@@ -68,7 +70,7 @@ export function useRental() {
     }
 
     const addProperty = async ({name, location, country, price, imageURL}) => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -94,11 +96,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        } else {
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const updateProperty = async ({propertyID, name, location, country, price, imageURL}) => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -118,11 +122,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const removeProperty = async ({propertyID}) => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -142,11 +148,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const bookProperty = async ({propertyID, startDate, endDate, price}) => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -166,11 +174,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const getPropertiesFromHost = async () => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -188,11 +198,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const getAllProperties = async () => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -210,11 +222,13 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
     const getBookings = async () => {
-        if (web3Modal){
+        if (web3Modal && isCorrectNetworkFlag){
             let connection = await web3Modal.connect();
             const provider = new ethers.providers.Web3Provider(connection);
             let signer = provider.getSigner();
@@ -232,6 +246,8 @@ export function useRental() {
                 setTransactionPending(false)
                 setLoading(false)
             }
+        }else{
+            toast.error('Error: Please Connect to the Polygon Testnet Network');
         }
     }
 
